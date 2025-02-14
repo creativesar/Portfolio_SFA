@@ -8,6 +8,7 @@ import anime from 'animejs';
 const NavBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const navRef = useRef(null);
+    const buttonRef = useRef(null);
 
     useEffect(() => {
         anime({
@@ -31,24 +32,17 @@ const NavBar = () => {
                 <Link href="/">SFA</Link>
             </div>
 
-            {/* Hamburger Menu Button */}
+            {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center">
                 <button onClick={() => setMenuOpen(!menuOpen)} className="text-white focus:outline-none">
-                    <motion.div animate={{ rotate: menuOpen ? 45 : 0 }} className="w-6 h-6 flex flex-col justify-between">
-                        <motion.span className="block h-0.5 w-full bg-white" animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 6 : 0 }} />
-                        <motion.span className={`block h-0.5 w-full bg-white ${menuOpen ? 'hidden' : 'block'}`} />
-                        <motion.span className="block h-0.5 w-full bg-white" animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -6 : 0 }} />
+                    <motion.div animate={{ rotate: menuOpen ? 90 : 0 }}>
+                        ☰
                     </motion.div>
                 </button>
             </div>
 
             {/* Nav Links */}
-            <motion.ul 
-                initial={{ x: '100%' }} 
-                animate={{ x: menuOpen ? 0 : '100%' }}
-                transition={{ duration: 0.3 }}
-                className={`md:flex md:space-x-6 absolute md:static top-16 right-0 w-full md:w-auto bg-gray-900 md:bg-transparent transition-all duration-300 ${menuOpen ? 'flex flex-col items-center py-4' : 'hidden md:flex'}`}
-            >
+            <ul className={`md:flex md:space-x-6 absolute md:static top-16 left-0 w-full md:w-auto bg-gray-900 md:bg-transparent transition-all duration-300 ${menuOpen ? 'flex flex-col items-center py-4' : 'hidden md:flex'}`}>
                 {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
                     <motion.li 
                         key={item} 
@@ -65,7 +59,42 @@ const NavBar = () => {
                         />
                     </motion.li>
                 ))}
-            </motion.ul>
+            </ul>
+
+            {/* Hire Me Button */}
+            <button
+                ref={buttonRef}
+                className="hidden md:flex group p-4 text-xl font-medium border-0 items-center justify-center bg-transparent text-green-500 w-[140px] overflow-hidden relative"
+            >
+                <Link href="/Contact" className="flex items-center justify-center w-full h-full">
+                    <motion.span 
+                        className="absolute left-0 h-full w-5 border-y border-l border-green-500"
+                        animate={{ width: menuOpen ? '100%' : '5px' }}
+                        transition={{ duration: 0.5 }}
+                    />
+                    <motion.p
+                        className="absolute"
+                        initial={{ opacity: 1, x: 0 }}
+                        animate={{ opacity: menuOpen ? 0 : 1, x: menuOpen ? -30 : 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        Hire Me
+                    </motion.p>
+                    <motion.span
+                        className="absolute"
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: menuOpen ? 1 : 0, x: menuOpen ? 0 : 30 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        Let&apos;s Go
+                    </motion.span>
+                    <motion.span 
+                        className="absolute right-0 h-full w-5 border-y border-r border-green-500"
+                        animate={{ width: menuOpen ? '100%' : '5px' }}
+                        transition={{ duration: 0.5 }}
+                    />
+                </Link>
+            </button>
         </motion.nav>
     );
 };
