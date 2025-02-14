@@ -168,7 +168,7 @@ const ContactForm = () => {
               </div>
               <div>
                 <h4 className="text-lg sm:text-xl font-semibold text-white">Email Us</h4>
-                <p className="text-sm sm:text-base text-white">uniqueluck68.com</p>
+                <p className="text-sm sm:text-base text-white">uniqueluck68@gmail.com</p>
               </div>
             </motion.div>
 
