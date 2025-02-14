@@ -35,7 +35,7 @@ const NavBar = () => {
             </div>
 
             {/* Mobile Menu */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center gap-4">
                 <Sheet>
                     <SheetTrigger>
                         <motion.div animate={{ rotate: menuOpen ? 90 : 0 }} className="text-white cursor-pointer">
@@ -57,6 +57,46 @@ const NavBar = () => {
                         </ul>
                     </SheetContent>
                 </Sheet>
+
+                {/* Hire Me Button - Visible on Mobile */}
+                <button
+                    ref={buttonRef}
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                    className="flex p-3 sm:p-4 cursor-pointer relative text-lg sm:text-xl font-normal border-0 items-center justify-center bg-transparent text-green-500 h-auto w-[100px] sm:w-[140px] overflow-hidden transition-all duration-100"
+                >
+                    <span
+                        className={`
+                            absolute left-0 h-full w-5 border-y border-l border-green-500
+                            transition-all duration-500 ${hovered ? 'w-full' : ''}
+                        `}
+                    ></span>
+
+                    <p
+                        className={`
+                            absolute transition-all duration-200
+                            ${hovered ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}
+                        `}
+                    >
+                        Hire Me
+                    </p>
+
+                    <span
+                        className={`
+                            absolute transition-all duration-200
+                            ${hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}
+                        `}
+                    >
+                        Let&apos;s Go
+                    </span>
+
+                    <span
+                        className={`
+                            absolute right-0 h-full w-5 border-y border-r border-green-500
+                            transition-all duration-500 ${hovered ? 'w-full' : ''}
+                        `}
+                    ></span>
+                </button>
             </div>
 
             {/* Desktop Nav Links */}
@@ -78,7 +118,7 @@ const NavBar = () => {
                 ))}
             </ul>
 
-            {/* Hire Me Button */}
+            {/* Hire Me Button - Visible on Desktop */}
             <button
                 ref={buttonRef}
                 onMouseEnter={() => setHovered(true)}
