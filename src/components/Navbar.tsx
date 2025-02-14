@@ -34,9 +34,31 @@ const NavBar = () => {
                 <Link href="/">SFA</Link>
             </div>
 
-            {/* Right Section (Hire Me + Mobile Menu) */}
-            <div className="flex items-center gap-4">
-                {/* Hire Me Button - Visible on Mobile & Desktop */}
+            {/* Mobile Menu */}
+            <div className="md:hidden flex items-center gap-4">
+                <Sheet>
+                    <SheetTrigger>
+                        <motion.div animate={{ rotate: menuOpen ? 90 : 0 }} className="text-white cursor-pointer">
+                            ☰
+                        </motion.div>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="bg-gray-900 p-6">
+                        <ul className="space-y-4">
+                            {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
+                                <motion.li 
+                                    key={item} 
+                                    className="text-lg font-semibold text-white"
+                                    whileHover={{ scale: 1.1, color: '#10B981' }}
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    <Link href={`/${item === 'Home' ? '' : item}`}>{item}</Link>
+                                </motion.li>
+                            ))}
+                        </ul>
+                    </SheetContent>
+                </Sheet>
+
+                {/* Hire Me Button - Visible on Mobile */}
                 <button
                     ref={buttonRef}
                     onMouseEnter={() => setHovered(true)}
@@ -44,50 +66,37 @@ const NavBar = () => {
                     className="flex p-3 sm:p-4 cursor-pointer relative text-lg sm:text-xl font-normal border-0 items-center justify-center bg-transparent text-green-500 h-auto w-[100px] sm:w-[140px] overflow-hidden transition-all duration-100"
                 >
                     <span
-                        className={`absolute left-0 h-full w-5 border-y border-l border-green-500 transition-all duration-500 ${hovered ? 'w-full' : ''}`}
+                        className={`
+                            absolute left-0 h-full w-5 border-y border-l border-green-500
+                            transition-all duration-500 ${hovered ? 'w-full' : ''}
+                        `}
                     ></span>
 
                     <p
-                        className={`absolute transition-all duration-200 ${hovered ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}`}
+                        className={`
+                            absolute transition-all duration-200
+                            ${hovered ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}
+                        `}
                     >
                         Hire Me
                     </p>
 
                     <span
-                        className={`absolute transition-all duration-200 ${hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}`}
+                        className={`
+                            absolute transition-all duration-200
+                            ${hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}
+                        `}
                     >
                         Let&apos;s Go
                     </span>
 
                     <span
-                        className={`absolute right-0 h-full w-5 border-y border-r border-green-500 transition-all duration-500 ${hovered ? 'w-full' : ''}`}
+                        className={`
+                            absolute right-0 h-full w-5 border-y border-r border-green-500
+                            transition-all duration-500 ${hovered ? 'w-full' : ''}
+                        `}
                     ></span>
                 </button>
-
-                {/* Mobile Menu */}
-                <div className="md:hidden">
-                    <Sheet>
-                        <SheetTrigger>
-                            <motion.div animate={{ rotate: menuOpen ? 90 : 0 }} className="text-white cursor-pointer">
-                                ☰
-                            </motion.div>
-                        </SheetTrigger>
-                        <SheetContent side="left" className="bg-gray-900 p-6">
-                            <ul className="space-y-4">
-                                {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
-                                    <motion.li 
-                                        key={item} 
-                                        className="text-lg font-semibold text-white"
-                                        whileHover={{ scale: 1.1, color: '#10B981' }}
-                                        onClick={() => setMenuOpen(false)}
-                                    >
-                                        <Link href={`/${item === 'Home' ? '' : item}`}>{item}</Link>
-                                    </motion.li>
-                                ))}
-                            </ul>
-                        </SheetContent>
-                    </Sheet>
-                </div>
             </div>
 
             {/* Desktop Nav Links */}
@@ -108,6 +117,46 @@ const NavBar = () => {
                     </motion.li>
                 ))}
             </ul>
+
+            {/* Hire Me Button - Visible on Desktop */}
+            <button
+                ref={buttonRef}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                className="hidden md:flex p-4 sm:p-5 cursor-pointer relative text-lg sm:text-xl font-normal border-0 items-center justify-center bg-transparent text-green-500 h-auto w-[120px] sm:w-[140px] overflow-hidden transition-all duration-100"
+            >
+                <span
+                    className={`
+                        absolute left-0 h-full w-5 border-y border-l border-green-500
+                        transition-all duration-500 ${hovered ? 'w-full' : ''}
+                    `}
+                ></span>
+
+                <p
+                    className={`
+                        absolute transition-all duration-200
+                        ${hovered ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}
+                    `}
+                >
+                    Hire Me
+                </p>
+
+                <span
+                    className={`
+                        absolute transition-all duration-200
+                        ${hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}
+                    `}
+                >
+                    Let&apos;s Go
+                </span>
+
+                <span
+                    className={`
+                        absolute right-0 h-full w-5 border-y border-r border-green-500
+                        transition-all duration-500 ${hovered ? 'w-full' : ''}
+                    `}
+                ></span>
+            </button>
         </motion.nav>
     );
 };
