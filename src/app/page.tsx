@@ -7,9 +7,11 @@ import TestimonialsSection from "@/components/Testiomonials";
 import Image from "next/image";
 import Form from "@/components/Form";
 
+
 export default function Home() {
   return (
     <div>
+   
      <Hero />
      <About />
      <Services />

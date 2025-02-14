@@ -1,117 +1,72 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import anime from 'animejs';
 
-const NavBar: React.FC = () => {
-    const [hovered, setHovered] = useState(false);
+const NavBar = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
     const navRef = useRef(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
-        // Initial animation for nav bar
-        const navElements = navRef.current;
-        if (navElements) {
-            (navElements as HTMLElement).classList.add('transition-all', 'duration-700', 'ease-out');
-        }
+        anime({
+            targets: navRef.current,
+            translateY: [-50, 0],
+            opacity: [0, 1],
+            duration: 1000,
+            easing: 'easeOutExpo'
+        });
     }, []);
 
     return (
-        <nav ref={navRef} className="w-full h-16 flex justify-between items-center p-4 bg-gray-800 fixed top-0 left-0 right-0 z-50 shadow-lg">
-            {/* SFA logo */}
-            <div className="mb-4 sm:mb-0 text-center sm:text-left">
-    <Link href="/">
-        <div className="text-3xl font-extrabold text-white flex items-center">
-            SFA
-        </div>
-    </Link>
-</div>
+        <motion.nav
+            ref={navRef}
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="w-full h-16 flex justify-between items-center px-6 bg-gray-900 fixed top-0 left-0 right-0 z-50 shadow-lg"
+        >
+            <div className="text-3xl font-extrabold text-white">
+                <Link href="/">SFA</Link>
+            </div>
 
-            <ul className="flex space-x-6 py-5">
-                <li className="text-lg font-semibold text-white relative group transition duration-300 transform hover:scale-105 hover:text-green-500">
-                    <Link href="/">Home</Link>
-                    <span className="absolute left-0 bottom-0 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </li>
-                <li className="text-lg font-semibold text-white relative group transition duration-300 transform hover:scale-105 hover:text-green-500">
-                    <Link href="/About">About</Link>
-                    <span className="absolute left-0 bottom-0 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </li>
-                <li className="text-lg font-semibold text-white relative group transition duration-300 transform hover:scale-105 hover:text-green-500">
-                    <Link href="/Service">Services</Link>
-                    <span className="absolute left-0 bottom-0 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </li>
-                <li className="text-lg font-semibold text-white relative group transition duration-300 transform hover:scale-105 hover:text-green-500">
-                    <Link href="/Portfolio">Portfolio</Link>
-                    <span className="absolute left-0 bottom-0 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </li>
-                <li className="text-lg font-semibold text-white relative group transition duration-300 transform hover:scale-105 hover:text-green-500">
-                    <Link href="/Contact">Contact</Link>
-                    <span className="absolute left-0 bottom-0 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </li>
-            </ul>
+            {/* Hamburger Menu Button */}
+            <div className="md:hidden flex items-center">
+                <button onClick={() => setMenuOpen(!menuOpen)} className="text-white focus:outline-none">
+                    <motion.div animate={{ rotate: menuOpen ? 45 : 0 }} className="w-6 h-6 flex flex-col justify-between">
+                        <motion.span className="block h-0.5 w-full bg-white" animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 6 : 0 }} />
+                        <motion.span className={`block h-0.5 w-full bg-white ${menuOpen ? 'hidden' : 'block'}`} />
+                        <motion.span className="block h-0.5 w-full bg-white" animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -6 : 0 }} />
+                    </motion.div>
+                </button>
+            </div>
 
-            {/* Animated Button without Glow */}
-            <button
-  ref={buttonRef}
-  onMouseEnter={() => setHovered(true)}
-  onMouseLeave={() => setHovered(false)}
-  className="
-    group
-    p-5
-    cursor-pointer
-    relative
-    text-xl
-    font-normal
-    border-0
-    flex
-    items-center
-    justify-center
-    bg-transparent
-    text-green-500
-    h-auto
-    w-[140px] /* Width reduced */
-    overflow-hidden
-    transition-all
-    duration-100
-  "
->
-  {/* Wrapping the button with Link */}
-    <  Link href="/Contact" className="flex items-center justify-center w-full h-full"> {/* Link wrapper */}
-      <span
-        className={`
-          absolute left-0 h-full w-5 border-y border-l border-green-500
-          transition-all duration-500 ${hovered ? 'w-full' : ''}
-        `}
-      ></span>
-
-      <p
-        className={`
-          absolute transition-all duration-200
-          ${hovered ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}
-        `}
-      >
-        Hire Me
-      </p>
-
-      <span
-        className={`
-          absolute transition-all duration-200
-          ${hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}
-        `}
-      >
-        Let&apos;s Go
-      </span>
-
-      <span
-        className={`
-          absolute right-0 h-full w-5 border-y border-r border-green-500
-          transition-all duration-500 ${hovered ? 'w-full' : ''}
-        `}
-      ></span>
-   
-  </Link>
-</button>
-        </nav>
+            {/* Nav Links */}
+            <motion.ul 
+                initial={{ x: '100%' }} 
+                animate={{ x: menuOpen ? 0 : '100%' }}
+                transition={{ duration: 0.3 }}
+                className={`md:flex md:space-x-6 absolute md:static top-16 right-0 w-full md:w-auto bg-gray-900 md:bg-transparent transition-all duration-300 ${menuOpen ? 'flex flex-col items-center py-4' : 'hidden md:flex'}`}
+            >
+                {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
+                    <motion.li 
+                        key={item} 
+                        className="text-lg font-semibold text-white relative group p-4 md:p-0"
+                        whileHover={{ scale: 1.1, color: '#10B981' }}
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        <Link href={`/${item === 'Home' ? '' : item}`}>{item}</Link>
+                        <motion.span 
+                            className="absolute left-0 bottom-0 w-full h-0.5 bg-green-500"
+                            initial={{ scaleX: 0 }}
+                            whileHover={{ scaleX: 1 }}
+                            transition={{ duration: 0.3 }}
+                        />
+                    </motion.li>
+                ))}
+            </motion.ul>
+        </motion.nav>
     );
 };
 
