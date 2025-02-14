@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import anime from 'animejs';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const NavBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [hovered, setHovered] = useState(false);
     const navRef = useRef(null);
     const buttonRef = useRef(null);
 
@@ -32,23 +34,38 @@ const NavBar = () => {
                 <Link href="/">SFA</Link>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center">
-                <button onClick={() => setMenuOpen(!menuOpen)} className="text-white focus:outline-none">
-                    <motion.div animate={{ rotate: menuOpen ? 90 : 0 }}>
-                        ☰
-                    </motion.div>
-                </button>
+            {/* Mobile Menu */}
+            <div className="md:hidden">
+                <Sheet>
+                    <SheetTrigger>
+                        <motion.div animate={{ rotate: menuOpen ? 90 : 0 }} className="text-white cursor-pointer">
+                            ☰
+                        </motion.div>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="bg-gray-900 p-6">
+                        <ul className="space-y-4">
+                            {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
+                                <motion.li 
+                                    key={item} 
+                                    className="text-lg font-semibold text-white"
+                                    whileHover={{ scale: 1.1, color: '#10B981' }}
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    <Link href={`/${item === 'Home' ? '' : item}`}>{item}</Link>
+                                </motion.li>
+                            ))}
+                        </ul>
+                    </SheetContent>
+                </Sheet>
             </div>
 
-            {/* Nav Links */}
-            <ul className={`md:flex md:space-x-6 absolute md:static top-16 left-0 w-full md:w-auto bg-gray-900 md:bg-transparent transition-all duration-300 ${menuOpen ? 'flex flex-col items-center py-4' : 'hidden md:flex'}`}>
+            {/* Desktop Nav Links */}
+            <ul className="hidden md:flex md:space-x-6">
                 {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
                     <motion.li 
                         key={item} 
-                        className="text-lg font-semibold text-white relative group p-4 md:p-0"
+                        className="text-lg font-semibold text-white relative group p-4"
                         whileHover={{ scale: 1.1, color: '#10B981' }}
-                        onClick={() => setMenuOpen(false)}
                     >
                         <Link href={`/${item === 'Home' ? '' : item}`}>{item}</Link>
                         <motion.span 
@@ -64,36 +81,41 @@ const NavBar = () => {
             {/* Hire Me Button */}
             <button
                 ref={buttonRef}
-                className="hidden md:flex group p-4 text-xl font-medium border-0 items-center justify-center bg-transparent text-green-500 w-[140px] overflow-hidden relative"
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                className="hidden md:flex p-4 sm:p-5 cursor-pointer relative text-lg sm:text-xl font-normal border-0 items-center justify-center bg-transparent text-green-500 h-auto w-[120px] sm:w-[140px] overflow-hidden transition-all duration-100"
             >
-                <Link href="/Contact" className="flex items-center justify-center w-full h-full">
-                    <motion.span 
-                        className="absolute left-0 h-full w-5 border-y border-l border-green-500"
-                        animate={{ width: menuOpen ? '100%' : '5px' }}
-                        transition={{ duration: 0.5 }}
-                    />
-                    <motion.p
-                        className="absolute"
-                        initial={{ opacity: 1, x: 0 }}
-                        animate={{ opacity: menuOpen ? 0 : 1, x: menuOpen ? -30 : 0 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        Hire Me
-                    </motion.p>
-                    <motion.span
-                        className="absolute"
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: menuOpen ? 1 : 0, x: menuOpen ? 0 : 30 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        Let&apos;s Go
-                    </motion.span>
-                    <motion.span 
-                        className="absolute right-0 h-full w-5 border-y border-r border-green-500"
-                        animate={{ width: menuOpen ? '100%' : '5px' }}
-                        transition={{ duration: 0.5 }}
-                    />
-                </Link>
+                <span
+                    className={`
+                        absolute left-0 h-full w-5 border-y border-l border-green-500
+                        transition-all duration-500 ${hovered ? 'w-full' : ''}
+                    `}
+                ></span>
+
+                <p
+                    className={`
+                        absolute transition-all duration-200
+                        ${hovered ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}
+                    `}
+                >
+                    Hire Me
+                </p>
+
+                <span
+                    className={`
+                        absolute transition-all duration-200
+                        ${hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}
+                    `}
+                >
+                    Let&apos;s Go
+                </span>
+
+                <span
+                    className={`
+                        absolute right-0 h-full w-5 border-y border-r border-green-500
+                        transition-all duration-500 ${hovered ? 'w-full' : ''}
+                    `}
+                ></span>
             </button>
         </motion.nav>
     );
